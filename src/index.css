@@ -1,13 +1,101 @@
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    background: rgba(217, 241, 255, 1);
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #567;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 48px;
+    margin-bottom: 30px;
+    color: Red;
+}
+
+h2 {
+    font-size: 48px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #333;
+}
+
+p {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+a {
+    color: #0070c0;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+/*Sign in*/
+
+.central-window {
+    width: 400px;
+    height: 640px;
+    background: rgba(255, 255, 255, 1);
+    opacity: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -320px;
+    margin-left: -200px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.title-sign-in {
+    width: 100%;
+    color: rgba(144, 85, 85, 1);
+    position: absolute;
+    top: 40%;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Inter, serif;
+    font-weight: normal;
+    font-size: 64px;
+    opacity: 1;
+    text-align: center;
+}
+
+.signin-button {
+    width: 80%;
+    position: absolute;
+    top: 75%;
+    display: inline-block;
+    padding: 15px 20px;
+    margin-left: 10%;
+    border-radius: 10px;
+    border: 2px solid #000;
+    background-color: #fff;
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signin-button:hover {
+    background-color: #000;
+    color: #fff;
 }

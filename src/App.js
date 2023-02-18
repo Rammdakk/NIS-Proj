@@ -1,36 +1,62 @@
 import './App.css';
 import React, {Component} from 'react';
-
-let client;
-let access_token;
-let refresh_token;
-
-let CLIENT_ID =
-    "1073973625564-lc2hm4fnvt3ogj198jujjp8spbae621i.apps.googleusercontent.com";
-
-const SCOPES = "https://www.googleapis.com/auth/spreadsheets";
+import {Route, Routes, Navigate} from 'react-router-dom';
+import Home from './Home';
+import SignIn from './SignIn';
+import NotFound from './NotFound';
 
 class App extends Component {
 
     render() {
+        return (
+            <div>
+                <Routes>
+                    <Route path="/signin" element={<SignIn/>}/>
+                    <Route path="/home" element={<Home/>}/>
+                    <Route path="/notFound" element={<NotFound/>}/>
+                    <Route
+                        path=""
+                        element={<Navigate to="/signin"/>}
+                    />
+                    <Route
+                        path="*"
+                        element={<Navigate to="/notFound"/>}
+                    />
+                </Routes>
+            </div>
+        );
+    }
+
+    render2() {
         const script = document.createElement("script");
         script.onload = this.initClient;
         script.src = "https://accounts.google.com/gsi/client";
 
         document.body.appendChild(script);
-        return (<div className="App">
-            <div className="App-header">
-                <h2 className="lng-h2">Checkers </h2>
+        return (
+            <div className="App">
+                <Router>
+                    <Routes> {/* The Switch decides which component to show based on the current URL.*/}
+                        <Route exact path='/' element={<Home/>}></Route>
+                        <Route exact path='/signin' element={<SignIn/>}></Route>
+                    </Routes>
+                </Router>
+                {/*<Main />*/}
             </div>
-            <button onClick={getToken}> Get access token< /button>
-            <button onClick={logToken}> Log access token< /button>
-            <button onClick={loadCalendar}>Load Calendar</button>
-            <button onClick={revokeToken}>Revoke token</button>
-        </div>);
+            // <div className="App">
+            //     <div className="App-header">
+            //         <h2 className="lng-h2">Checkers </h2>
+            //     </div>
+            //     <button onClick={getToken}> Get access token< /button>
+            //     <button onClick={logToken}> Log access token< /button>
+            //     <button onClick={loadCalendar}>Load Calendar</button>
+            //     <button onClick={revokeToken}>Revoke token</button>
+            // </div>
+        );
     }
 
 
-    initClient= () => {
+    initClient = () => {
         console.log("frwgfhed")
         // eslint-disable-next-line no-undef
         client = google.accounts.oauth2.initTokenClient({
@@ -47,28 +73,5 @@ class App extends Component {
     }
 }
 
-function logToken() {
-    console.log("access_token");
-    console.log(access_token);
-    console.log("from storage");
-    console.log(localStorage.getItem("token"));
-}
-
-function getToken() {
-    client.requestAccessToken();
-}
-function revokeToken() {
-    // eslint-disable-next-line no-undef
-    google.accounts.oauth2.revoke(access_token, () => {console.log('access token revoked')});
-}
-function loadCalendar() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://sheets.googleapis.com/v4/spreadsheets/1ouJLVVoD9wKNjjMi5FC2Xmf8MmvTSfq5dyTCfi933ak/values/A1:A5');
-    xhr.setRequestHeader('Authorization', 'Bearer ' + access_token);
-    xhr.send();
-    xhr.onload = function() {
-        console.log(`Загружено: ${xhr.status} ${xhr.response}`);
-    };
-}
 
 export default App;
