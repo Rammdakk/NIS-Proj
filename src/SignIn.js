@@ -23,12 +23,9 @@ const SignIn = () => {
                 <div className="central-window">
                     <span className="title-sign-in">WELCOME</span>
                     <div className="name"></div>
-                    <button id="google-signin-btn" className="signin-button">
+                    <button id="google-signin-btn" className="signin-button" onClick={getToken}>
                         Sign in with Google
                     </button>
-                    {/*<button id="google-signin-btn" onClick={this.logToken()}>*/}
-                    {/*    Log*/}
-                    {/*</button>*/}
                 </div>
             </div>
             </body>
@@ -48,6 +45,7 @@ const initClient = () => {
             access_token = tokenResponse.access_token;
             localStorage.setItem("token", access_token)
             refresh_token = tokenResponse.refresh_token
+            window.location.href = window.location.origin + "/home"
         },
     });
 }
@@ -70,14 +68,5 @@ function revokeToken() {
     });
 }
 
-function loadCalendar() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://sheets.googleapis.com/v4/spreadsheets/1ouJLVVoD9wKNjjMi5FC2Xmf8MmvTSfq5dyTCfi933ak/values/A1:A5');
-    xhr.setRequestHeader('Authorization', 'Bearer ' + access_token);
-    xhr.send();
-    xhr.onload = function () {
-        console.log(`Загружено: ${xhr.status} ${xhr.response}`);
-    };
-}
 
 export default SignIn;
