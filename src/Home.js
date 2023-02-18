@@ -6,13 +6,53 @@ const Home = () => {
     }
     console.log("HOOOOME")
     return (
-        <div>
-            <h2>
-                Home.
-            </h2>
-            <button id="google-signin-btn" className="signin-button" onClick={loadCalendar}>
-                Sign in with Google
-            </button>
+        <div className="table-background">
+            <table className="prod-table">
+                <thead>
+                <tr>
+                    <th>ITEM NAME</th>
+                    <th>QUANTITY</th>
+                    <th>ITEM ID</th>
+                    <th>PRICE</th>
+                    <th>DATE OF ORDER</th>
+                    <th>LINK TO PHOTO</th>
+                    <th>INVOICE LINK</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Dom</td>
+                    <td>6000</td>
+                    <td>Dom</td>
+                    <td>6000</td>
+                    <td>Dom</td>
+                    <td>6000</td>
+                    <td>Dom</td>
+                    <td>
+                        <button id="edit-button"  onClick={loadCalendar}>edit
+                        </button>
+                    </td>
+                    <td>
+                        <button id="delete-button"  onClick={loadCalendar}>delete
+                        </button>
+                    </td>
+                </tr>
+                <tr className="active-row">
+                    <td>Melissa</td>
+                    <td>5150</td>
+                    <td>Melissa</td>
+                    <td>5150</td>
+                    <td>Melissa</td>
+                    <td>5150</td>
+                    <td>Melissa</td>
+                    <td>5150</td>
+                    <td>5150</td>
+                </tr>
+                </tbody>
+            </table>
+
         </div>
     );
 };
