@@ -51,19 +51,19 @@ function addRow(arr){
     var tableBody = document.getElementById('myTable');
     var newRow = tableBody.insertRow(tableBody.rows.length);
     var nameCell = newRow.insertCell(0);
-    var scoreCell = newRow.insertCell(1);
     nameCell.appendChild(document.createTextNode(arr[0]));
-    scoreCell.appendChild(document.createTextNode(arr[1]));
-    var nameCell = newRow.insertCell(2);
-    var scoreCell = newRow.insertCell(3);
-    nameCell.appendChild(document.createTextNode(arr[2]));
-    scoreCell.appendChild(document.createTextNode(arr[3]));
-    var nameCell = newRow.insertCell(4);
-    var scoreCell = newRow.insertCell(5);
-    nameCell.appendChild(document.createTextNode(arr[4]));
-    scoreCell.appendChild(document.createTextNode(arr[5]));
-    var nameCell = newRow.insertCell(6);
-    nameCell.appendChild(document.createTextNode(arr[6]));
+    var quantCell = newRow.insertCell(1);
+    quantCell.appendChild(document.createTextNode(arr[1]));
+    var idCell = newRow.insertCell(2);
+    idCell.appendChild(document.createTextNode(arr[2]));
+    var priceCell = newRow.insertCell(3);
+    priceCell.appendChild(document.createTextNode(arr[3]));
+    var dateCell = newRow.insertCell(4);
+    dateCell.appendChild(document.createTextNode(arr[4]));
+    var photoCell = newRow.insertCell(5);
+    photoCell.appendChild(document.createTextNode(arr[5]));
+    var invoiceCell = newRow.insertCell(6);
+    invoiceCell.appendChild(document.createTextNode(arr[6]));
     var editCell = newRow.insertCell(7);
     const button2 = document.createElement('button')
     button2.innerText = 'edit'

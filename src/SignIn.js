@@ -2,7 +2,6 @@ import React from "react";
 
 let client
 let access_token
-let refresh_token
 
 const CLIENT_ID = "1073973625564-lc2hm4fnvt3ogj198jujjp8spbae621i.apps.googleusercontent.com"
 
@@ -48,7 +47,6 @@ const initClient = () => {
             console.log(tokenResponse.expires_in)
             access_token = tokenResponse.access_token;
             localStorage.setItem("token", access_token)
-            refresh_token = tokenResponse.refresh_token
             var signIn1 = document.getElementById("google-signin-btn");
             signIn1.style.display = "none";
             var signIn2 = document.getElementById("google-signin-btn2");
@@ -59,12 +57,6 @@ const initClient = () => {
     });
 }
 
-function logToken() {
-    console.log("access_token");
-    console.log(access_token);
-    console.log("from storage");
-    console.log(localStorage.getItem("token"));
-}
 
 function movePage() {
     var link = document.getElementById("myTextField").value
@@ -76,7 +68,7 @@ function movePage() {
     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem("token"));
     xhr.send();
     xhr.onload = function () {
-        if (xhr.status == 200 ){
+        if (xhr.status === 200 ){
             window.location.href = window.location.origin + "/home"
         } else {
             window.location.href = window.location.origin + "/notFound"
