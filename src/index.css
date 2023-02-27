@@ -100,8 +100,35 @@ code {
     color: #fff;
 }
 
+.signInTV {
+    width: 70%;
+    position: absolute;
+    top: 60%;
+    padding: 15px 20px;
+    margin-left: 10%;
+    border-radius: 10px;
+    border: 2px solid #000;
+    background-color: #fff;
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    display: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#google-signin-btn {
+    display: block;
+}
+
+#google-signin-btn2 {
+    display: none;
+}
 
 /*TablePage*/
+
 
 .prod-table tbody tr {
     border-bottom: 1px solid #dddddd;
@@ -109,10 +136,6 @@ code {
     border-right: 2px solid #dddddd;
 }
 
-.prod-table tbody tr.active-row {
-    font-weight: bold;
-    color: #009879;
-}
 
 .prod-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
@@ -134,6 +157,7 @@ code {
     border: 2px solid #dddddd;
 }
 
+
 .prod-table {
     border-collapse: collapse;
     font-size: 0.9em;
@@ -143,15 +167,21 @@ code {
     margin-left: 2%;
     margin-top: 2%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
 }
 
 .table-background {
     width: 94%;
-    height: 945px;
+    height: 700px;
     background: rgba(255, 255, 255, 1);
     opacity: 1;
     position: absolute;
     top: 161px;
     left: 3%;
-    overflow: hidden;
+}
+
+.scrollable
+{
+    height: 600px;
+    overflow: auto;
 }

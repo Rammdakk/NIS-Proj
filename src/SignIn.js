@@ -23,8 +23,12 @@ const SignIn = () => {
                 <div className="central-window">
                     <span className="title-sign-in">WELCOME</span>
                     <div className="name"></div>
+                    <input type="text" id="myTextField" className="signInTV"/>
                     <button id="google-signin-btn" className="signin-button" onClick={getToken}>
                         Sign in with Google
+                    </button>
+                    <button id="google-signin-btn2" className="signin-button" onClick={movePage}>
+                        Continue
                     </button>
                 </div>
             </div>
@@ -45,7 +49,12 @@ const initClient = () => {
             access_token = tokenResponse.access_token;
             localStorage.setItem("token", access_token)
             refresh_token = tokenResponse.refresh_token
-            window.location.href = window.location.origin + "/home"
+            var signIn1 = document.getElementById("google-signin-btn");
+            signIn1.style.display = "none";
+            var signIn2 = document.getElementById("google-signin-btn2");
+            signIn2.style.display = "block";
+            var text = document.getElementById("myTextField")
+            text.style.display = "block"
         },
     });
 }
@@ -57,16 +66,28 @@ function logToken() {
     console.log(localStorage.getItem("token"));
 }
 
+function movePage() {
+    var link = document.getElementById("myTextField").value
+    var part = link.split('/')
+    var id = part[part.length-2]
+    localStorage.setItem("sheet_id", id)
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${id}/values/A1:A5`);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem("token"));
+    xhr.send();
+    xhr.onload = function () {
+        if (xhr.status == 200 ){
+            window.location.href = window.location.origin + "/home"
+        } else {
+            window.location.href = window.location.origin + "/notFound"
+        }
+    };
+}
+
 function getToken() {
     client.requestAccessToken();
 }
 
-function revokeToken() {
-    // eslint-disable-next-line no-undef
-    google.accounts.oauth2.revoke(access_token, () => {
-        console.log('access token revoked')
-    });
-}
 
 
 export default SignIn;
