@@ -180,8 +180,122 @@ code {
     left: 3%;
 }
 
-.scrollable
-{
+.scrollable {
     height: 600px;
     overflow: auto;
+}
+
+#add-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 5%;
+    width: 70px;
+    height: 70px;
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.plus {
+    position: relative;
+    display: inline-block;
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.plus::before,
+.plus::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.plus::before {
+    transform: rotate(90deg);
+}
+
+.plus::after {
+    transform: rotate(180deg);
+}
+
+/*POP-UP*/
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 640px;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid black;
+    border-radius: 20px;
+    display: none;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.popup label {
+    display: block;
+    margin-left: 10%;
+    margin-bottom: 10px;
+}
+
+
+.popup input {
+    display: block;
+    margin-bottom: 20px;
+    margin-left: 10%;
+    width: 80%;
+    padding: 10px;
+    box-sizing: border-box;
+    background: rgba(217, 241, 255, 1);
+    border-radius: 5px;
+}
+
+.popup select {
+    display: block;
+    margin-bottom: 20px;
+    margin-left: 10%;
+    width: 40%;
+    padding: 10px;
+    box-sizing: border-box;
+    background: rgba(217, 241, 255, 1);
+    border-radius: 5px;
+}
+
+#save-btn {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 5%;
+    margin-left: 10%;
+    width: 35%;
+    cursor: pointer;
+}
+#cancel-btn {
+    background-color: darkred;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 10%;
+    margin-left: 5%;
+    width: 35%;
+    cursor: pointer;
 }

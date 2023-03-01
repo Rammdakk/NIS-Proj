@@ -1,8 +1,8 @@
 import React from "react";
 
 const Home = () => {
-    if (!localStorage.getItem("token")){
-        window.location.href = window.location.origin+"/signin"
+    if (!localStorage.getItem("token")) {
+        window.location.href = window.location.origin + "/signin"
     }
     loadCalendar()
     return (
@@ -23,9 +23,34 @@ const Home = () => {
                 </thead>
             </table>
             <div className="scrollable">
-            <table id="myTable" className="prod-table">
-
-            </table>
+                <table id="myTable" className="prod-table"></table>
+                <button id="add-btn" onClick={showPopUp}><span className="plus"></span></button>
+                <div id="popup" className="popup">
+                    <label htmlFor="productInfo">Product info:</label>
+                    <input type="text" id="item_name" placeholder="item name"/>
+                    <input type="text" id="item_id" placeholder="item id"/>
+                    <input type="text" id="item_price" placeholder="item price"/>
+                    <label htmlFor="quantity">Quantity:</label>
+                    <select id="quantity" placeholder="quantity">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                    <label htmlFor="links">Links:</label>
+                    <input type="text" id="photo_link" placeholder="photo link (opt)"/>
+                    <input type="text" id="inv_link" placeholder="invoice link (opt)"/>
+                    <label htmlFor="date">Date:</label>
+                    <input type="date" id="date"/>
+                    <button id="save-btn" onClick={addItem}>Save</button>
+                    <button id="cancel-btn" onClick={hidePopUp}>Cancel</button>
+                </div>
             </div>
         </div>
     );
@@ -47,7 +72,50 @@ function loadCalendar() {
     };
 }
 
-function addRow(arr){
+function addItem() {
+    var arr = new Array()
+    arr.push(document.getElementById('item_name').value)
+    arr.push(document.getElementById('quantity').value)
+    arr.push(document.getElementById('item_id').value)
+    arr.push(document.getElementById('item_price').value)
+    arr.push(document.getElementById('date').value)
+    arr.push(document.getElementById('photo_link').value)
+    arr.push(document.getElementById('inv_link').value)
+    console.log(arr)
+    addRow(arr)
+    loadItem(arr)
+    hidePopUp()
+}
+
+function loadItem(arr) {
+    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A22:G22:append?valueInputOption=USER_ENTERED`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+            "values": [
+                [
+                    arr[0],
+                    arr[1],
+                    arr[2],
+                    arr[3],
+                    arr[4],
+                    arr[5],
+                    arr[6]
+                ]
+            ]
+        })
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+}
+
+function addRow(arr) {
+    if (arr[0] == undefined)
+        return
     var tableBody = document.getElementById('myTable');
     var newRow = tableBody.insertRow(tableBody.rows.length);
     var nameCell = newRow.insertCell(0);
@@ -65,14 +133,40 @@ function addRow(arr){
     var invoiceCell = newRow.insertCell(6);
     invoiceCell.appendChild(document.createTextNode(arr[6]));
     var editCell = newRow.insertCell(7);
-    const button2 = document.createElement('button')
-    button2.innerText = 'edit'
-    editCell.appendChild(button2);
+    const editButton = document.createElement('button')
+    editButton.innerText = 'edit'
+    editCell.appendChild(editButton);
+    editButton.addEventListener('click', (event) => {
+        // Get the parent row element of the clicked button
+        const row = event.target.parentNode.parentNode;
+
+        // Log the row's content
+        console.log(row);
+        console.log(row.parentNode)
+        console.log(Array.from(row.parentNode.children).indexOf(row))
+    });
     var deleteCell = newRow.insertCell(8);
-    const button = document.createElement('button')
-    button.innerText = 'delete'
-    deleteCell.appendChild(button);
+    const deleteButton = document.createElement('button')
+    deleteButton.innerText = 'delete'
+    deleteCell.appendChild(deleteButton);
+    deleteButton.addEventListener('click', (event) => {
+        // Get the parent row element of the clicked button
+        const row = event.target.parentNode.parentNode;
+
+        // Log the row's content
+        console.log(row);
+        console.log(row.parentNode)
+        console.log(Array.from(row.parentNode.children).indexOf(row))
+        tableBody.deleteRow(Array.from(row.parentNode.children).indexOf(row))
+    });
 }
 
+function showPopUp() {
+    document.getElementById('popup').style.display = 'block';
+}
+
+function hidePopUp() {
+    document.getElementById('popup').style.display = 'none';
+}
 
 export default Home;
