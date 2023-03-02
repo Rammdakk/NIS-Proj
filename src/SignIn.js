@@ -52,6 +52,9 @@ const initClient = () => {
             var signIn2 = document.getElementById("google-signin-btn2");
             signIn2.style.display = "block";
             var text = document.getElementById("myTextField")
+            if (localStorage.getItem("sheet_id") != undefined){
+                text.value = `https://docs.google.com/spreadsheets/d/${localStorage.getItem("sheet_id")}/edit#gid=0`
+            }
             text.style.display = "block"
         },
     });

@@ -1,5 +1,6 @@
 import React from "react";
 
+var localData
 const Home = () => {
     if (!localStorage.getItem("token")) {
         window.location.href = window.location.origin + "/signin"
@@ -7,7 +8,7 @@ const Home = () => {
     loadTable()
     return (
         <div className="table-background">
-            <table id="myTable" className="prod-table">
+            <table id="myTableHeader" className="prod-table">
                 <thead>
                 <tr>
                     <th>ITEM NAME</th>
@@ -23,7 +24,7 @@ const Home = () => {
                 </thead>
             </table>
             <div className="scrollable">
-                <table id="myTable5" className="prod-table">
+                <table id="myTable" className="prod-table">
                 </table>
                 <button id="add-btn" onClick={showPopUp}><span className="plus"></span></button>
             </div>
@@ -50,7 +51,7 @@ const Home = () => {
                 <input type="text" id="inv_link" placeholder="invoice link (opt)"/>
                 <label htmlFor="date">Date:</label>
                 <input type="date" id="date"/>
-                <button id="save-btn" onClick={addItem}>Save</button>
+                <button id="save-btn">Save</button>
                 <button id="cancel-btn" onClick={hidePopUp}>Cancel</button>
             </div>
         </div>
@@ -69,9 +70,13 @@ function loadTable() {
     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem("token"));
     xhr.send();
     xhr.onload = function () {
+        if (xhr.status === 401) {
+            window.location.href = window.location.origin + "/signin"
+        }
         var data = JSON.parse(xhr.response)
+        localData = data.values
         data.values.forEach(function (entry) {
-            addRow('myTable5', entry)
+            addRow('myTable', entry)
         })
     };
 }
@@ -92,12 +97,12 @@ function addItem() {
     arr.push(document.getElementById('date').value)
     arr.push(document.getElementById('photo_link').value)
     arr.push(document.getElementById('inv_link').value)
-    addRow(arr)
-    loadItem(arr)
+    addRow("myTable", arr)
+    addItemToTheSheet(arr)
     hidePopUp()
 }
 
-function loadItem(arr) {
+function addItemToTheSheet(arr) {
     fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A2:G2:append?valueInputOption=USER_ENTERED`, {
         method: 'POST',
         headers: {
@@ -118,6 +123,31 @@ function loadItem(arr) {
             ]
         })
     })
+}
+
+function updateItemInSheet(arr, pos) {
+    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A${pos}:G${pos}?valueInputOption=USER_ENTERED`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+            "values": [
+                [
+                    arr[0],
+                    arr[1],
+                    arr[2],
+                    arr[3],
+                    arr[4],
+                    arr[5],
+                    arr[6]
+                ]
+            ]
+        })
+    }).then(
+        hidePopUp
+    )
 }
 
 function addRow(table_name, arr) {
@@ -142,20 +172,14 @@ function addRow(table_name, arr) {
     editButton.innerText = 'edit'
     editCell.appendChild(editButton);
     editButton.addEventListener('click', (event) => {
-        // Get the parent row element of the clicked button
         const row = event.target.parentNode.parentNode;
-
-        // Log the row's content
-        console.log(row);
-        console.log(row.parentNode)
-        console.log(Array.from(row.parentNode.children).indexOf(row))
+        updateRow(Array.from(row.parentNode.children).indexOf(row))
     });
     var deleteCell = newRow.insertCell(8);
     const deleteButton = document.createElement('button')
     deleteButton.innerText = 'delete'
     deleteCell.appendChild(deleteButton);
     deleteButton.addEventListener('click', (event) => {
-        // Get the parent row element of the clicked button
         const row = event.target.parentNode.parentNode;
         deleteRow(Array.from(row.parentNode.children).indexOf(row))
     });
@@ -164,6 +188,29 @@ function addRow(table_name, arr) {
     }
 }
 
+function updateRow(rowNumber){
+    document.getElementById('popup').style.display = 'block';
+    document.getElementById('save-btn').onclick = function () {
+        console.log("no test;")
+    // TODO: Make refresh
+        var arr = []
+        arr.push(document.getElementById('item_name').value)
+        arr.push(document.getElementById('quantity').value)
+        arr.push(document.getElementById('item_id').value)
+        arr.push(document.getElementById('item_price').value)
+        arr.push(document.getElementById('date').value)
+        arr.push(document.getElementById('photo_link').value)
+        arr.push(document.getElementById('inv_link').value)
+        updateItemInSheet(arr, rowNumber+2)
+    }
+    document.getElementById('item_name').value = localData[rowNumber][0];
+    document.getElementById('quantity').value =localData[rowNumber][1];
+    document.getElementById('item_id').value = localData[rowNumber][2];
+    document.getElementById('item_price').value = localData[rowNumber][3];
+    document.getElementById('date').value = localData[rowNumber][4];
+    document.getElementById('photo_link').value = localData[rowNumber][5];
+    document.getElementById('inv_link').value = localData[rowNumber][6];
+}
 function deleteRow(rowNumber) {
     fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A${rowNumber + 2}:G${rowNumber + 2}:clear`, {
         method: 'POST',
@@ -176,6 +223,9 @@ function deleteRow(rowNumber) {
 
 function showPopUp() {
     document.getElementById('popup').style.display = 'block';
+    document.getElementById('save-btn').onclick = function () {
+        addItem()
+    }
 }
 
 function hidePopUp() {
