@@ -137,9 +137,9 @@ code {
 }
 
 
-.prod-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
+/*.prod-table tbody tr:nth-of-type(even) {*/
+/*    background-color: #f3f3f3;*/
+/*}*/
 
 .prod-table tbody tr:last-of-type {
     border-bottom: 2px solid #dddddd;
@@ -148,15 +148,24 @@ code {
 .prod-table th,
 .prod-table td {
     padding: 12px 15px;
+    text-align: center;
 }
 
 .prod-table thead tr {
     background: white;
     color: #000000;
-    text-align: left;
+    text-align: center;
     border: 2px solid #dddddd;
+    position: sticky; top: 0;
 }
 
+.prod-table thead th {
+    background: white;
+    color: #000000;
+    text-align: center;
+    border: 2px solid #dddddd;
+    position: sticky; top: 0;
+}
 
 .prod-table {
     border-collapse: collapse;
@@ -167,21 +176,21 @@ code {
     margin-left: 2%;
     margin-top: 2%;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-
 }
+
 
 .table-background {
     width: 94%;
-    height: 700px;
+    height: 85%;
     background: rgba(255, 255, 255, 1);
     opacity: 1;
     position: absolute;
-    top: 161px;
+    top: 15%;
     left: 3%;
 }
 
 .scrollable {
-    height: 600px;
+    height: 85%;
     overflow: auto;
 }
 
