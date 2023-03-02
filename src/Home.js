@@ -4,76 +4,102 @@ const Home = () => {
     if (!localStorage.getItem("token")) {
         window.location.href = window.location.origin + "/signin"
     }
-    loadCalendar()
+    loadTable()
     return (
         <div className="table-background">
-            <table id="myTable6" className="prod-table">
-                <thead>
-                <tr>
-                    <th>ITEM NAME</th>
-                    <th>QUANTITY</th>
-                    <th>ITEM ID</th>
-                    <th>PRICE</th>
-                    <th>DATE OF ORDER</th>
-                    <th>LINK TO PHOTO</th>
-                    <th>INVOICE LINK</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-            </table>
             <div className="scrollable">
-                <table id="myTable" className="prod-table"></table>
+                {/*<table id="myTable" className="prod-table">*/}
+                {/*    <thead>*/}
+                {/*    <tr>*/}
+                {/*        <th>ITEM NAME</th>*/}
+                {/*        <th>QUANTITY</th>*/}
+                {/*        <th>ITEM ID</th>*/}
+                {/*        <th>PRICE</th>*/}
+                {/*        <th>DATE OF ORDER</th>*/}
+                {/*        <th>LINK TO PHOTO</th>*/}
+                {/*        <th>INVOICE LINK</th>*/}
+                {/*        <th>*/}
+                {/*            <button>edit</button>*/}
+                {/*        </th>*/}
+                {/*        <th> <button>delete</button></th>*/}
+                {/*    </tr>*/}
+                {/*    </thead>*/}
+                {/*</table>*/}
+                <table id="myTable5" className="prod-table">
+                    <thead>
+                    <tr>
+                        <th>ITEM NAME</th>
+                        <th>QUANTITY</th>
+                        <th>ITEM ID</th>
+                        <th>PRICE</th>
+                        <th>DATE OF ORDER</th>
+                        <th>LINK TO PHOTO</th>
+                        <th>INVOICE LINK</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                </table>
                 <button id="add-btn" onClick={showPopUp}><span className="plus"></span></button>
-                <div id="popup" className="popup">
-                    <label htmlFor="productInfo">Product info:</label>
-                    <input type="text" id="item_name" placeholder="item name"/>
-                    <input type="text" id="item_id" placeholder="item id"/>
-                    <input type="text" id="item_price" placeholder="item price"/>
-                    <label htmlFor="quantity">Quantity:</label>
-                    <select id="quantity" placeholder="quantity">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                    <label htmlFor="links">Links:</label>
-                    <input type="text" id="photo_link" placeholder="photo link (opt)"/>
-                    <input type="text" id="inv_link" placeholder="invoice link (opt)"/>
-                    <label htmlFor="date">Date:</label>
-                    <input type="date" id="date"/>
-                    <button id="save-btn" onClick={addItem}>Save</button>
-                    <button id="cancel-btn" onClick={hidePopUp}>Cancel</button>
-                </div>
+            </div>
+            <div id="popup" className="popup">
+                <label htmlFor="productInfo">Product info:</label>
+                <input type="text" id="item_name" placeholder="item name"/>
+                <input type="text" id="item_id" placeholder="item id"/>
+                <input type="text" id="item_price" placeholder="item price"/>
+                <label htmlFor="quantity">Quantity:</label>
+                <select id="quantity" placeholder="quantity">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+                <label htmlFor="links">Links:</label>
+                <input type="text" id="photo_link" placeholder="photo link (opt)"/>
+                <input type="text" id="inv_link" placeholder="invoice link (opt)"/>
+                <label htmlFor="date">Date:</label>
+                <input type="date" id="date"/>
+                <button id="save-btn" onClick={addItem}>Save</button>
+                <button id="cancel-btn" onClick={hidePopUp}>Cancel</button>
             </div>
         </div>
     );
 };
 
-function loadCalendar() {
+function updateTable() {
+    clearTable()
+    loadTable()
+}
+
+function loadTable() {
     var xhr = new XMLHttpRequest();
     console.log(localStorage.getItem("token"))
     xhr.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A2:G500`);
     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem("token"));
     xhr.send();
     xhr.onload = function () {
-        console.log(`Загружено: ${xhr.status} ${xhr.response}`);
         var data = JSON.parse(xhr.response)
-        console.log(data.values)
         data.values.forEach(function (entry) {
-            addRow(entry)
+            addRow('myTable5', entry)
         })
     };
 }
 
+function clearTable() {
+    var node = document.getElementById("myTable");
+    while (node.hasChildNodes()) {
+        node.removeChild(node.lastChild);
+    }
+}
+
 function addItem() {
-    var arr = new Array()
+    var arr = []
     arr.push(document.getElementById('item_name').value)
     arr.push(document.getElementById('quantity').value)
     arr.push(document.getElementById('item_id').value)
@@ -81,14 +107,13 @@ function addItem() {
     arr.push(document.getElementById('date').value)
     arr.push(document.getElementById('photo_link').value)
     arr.push(document.getElementById('inv_link').value)
-    console.log(arr)
     addRow(arr)
     loadItem(arr)
     hidePopUp()
 }
 
 function loadItem(arr) {
-    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A22:G22:append?valueInputOption=USER_ENTERED`, {
+    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A2:G2:append?valueInputOption=USER_ENTERED`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -108,15 +133,10 @@ function loadItem(arr) {
             ]
         })
     })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
 }
 
-function addRow(arr) {
-    if (arr[0] == undefined)
-        return
-    var tableBody = document.getElementById('myTable');
+function addRow(table_name, arr) {
+    var tableBody = document.getElementById(table_name);
     var newRow = tableBody.insertRow(tableBody.rows.length);
     var nameCell = newRow.insertCell(0);
     nameCell.appendChild(document.createTextNode(arr[0]));
@@ -152,13 +172,21 @@ function addRow(arr) {
     deleteButton.addEventListener('click', (event) => {
         // Get the parent row element of the clicked button
         const row = event.target.parentNode.parentNode;
-
-        // Log the row's content
-        console.log(row);
-        console.log(row.parentNode)
-        console.log(Array.from(row.parentNode.children).indexOf(row))
-        tableBody.deleteRow(Array.from(row.parentNode.children).indexOf(row))
+        deleteRow(Array.from(row.parentNode.children).indexOf(row))
     });
+    if (arr[0] === undefined || arr[1] === undefined) {
+        newRow.style.display = 'none';
+    }
+}
+
+function deleteRow(rowNumber) {
+    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A${rowNumber + 2}:G${rowNumber + 2}:clear`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+    }).then(updateTable)
 }
 
 function showPopUp() {
