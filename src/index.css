@@ -136,11 +136,6 @@ code {
     border-right: 2px solid #dddddd;
 }
 
-
-/*.prod-table tbody tr:nth-of-type(even) {*/
-/*    background-color: #f3f3f3;*/
-/*}*/
-
 .prod-table tbody tr:last-of-type {
     border-bottom: 2px solid #dddddd;
 }
@@ -151,21 +146,38 @@ code {
     text-align: center;
 }
 
+.prod-table th:nth-child(1),
+.prod-table td:nth-child(1) {
+    width: 20%;
+}
+
+.prod-table th:nth-child(2),
+.prod-table td:nth-child(2),
+.prod-table th:nth-child(3),
+.prod-table td:nth-child(3),
+.prod-table th:nth-child(4),
+.prod-table td:nth-child(4),
+.prod-table th:nth-child(5),
+.prod-table td:nth-child(5) {
+    width: 10%;
+}
+
+.prod-table th:nth-child(6),
+.prod-table td:nth-child(6),
+.prod-table th:nth-child(7),
+.prod-table td:nth-child(7) {
+    width: 15%;
+}
+
 .prod-table thead tr {
     background: white;
     color: #000000;
     text-align: center;
     border: 2px solid #dddddd;
-    position: sticky; top: 0;
+    position: sticky;
+    top: 0;
 }
 
-.prod-table thead th {
-    background: white;
-    color: #000000;
-    text-align: center;
-    border: 2px solid #dddddd;
-    position: sticky; top: 0;
-}
 
 .prod-table {
     border-collapse: collapse;
@@ -297,6 +309,7 @@ code {
     width: 35%;
     cursor: pointer;
 }
+
 #cancel-btn {
     background-color: darkred;
     color: white;

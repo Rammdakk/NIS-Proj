@@ -7,38 +7,23 @@ const Home = () => {
     loadTable()
     return (
         <div className="table-background">
+            <table id="myTable" className="prod-table">
+                <thead>
+                <tr>
+                    <th>ITEM NAME</th>
+                    <th>QUANTITY</th>
+                    <th>ITEM ID</th>
+                    <th>PRICE</th>
+                    <th>DATE OF ORDER</th>
+                    <th>LINK TO PHOTO</th>
+                    <th>INVOICE LINK</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+            </table>
             <div className="scrollable">
-                {/*<table id="myTable" className="prod-table">*/}
-                {/*    <thead>*/}
-                {/*    <tr>*/}
-                {/*        <th>ITEM NAME</th>*/}
-                {/*        <th>QUANTITY</th>*/}
-                {/*        <th>ITEM ID</th>*/}
-                {/*        <th>PRICE</th>*/}
-                {/*        <th>DATE OF ORDER</th>*/}
-                {/*        <th>LINK TO PHOTO</th>*/}
-                {/*        <th>INVOICE LINK</th>*/}
-                {/*        <th>*/}
-                {/*            <button>edit</button>*/}
-                {/*        </th>*/}
-                {/*        <th> <button>delete</button></th>*/}
-                {/*    </tr>*/}
-                {/*    </thead>*/}
-                {/*</table>*/}
                 <table id="myTable5" className="prod-table">
-                    <thead>
-                    <tr>
-                        <th>ITEM NAME</th>
-                        <th>QUANTITY</th>
-                        <th>ITEM ID</th>
-                        <th>PRICE</th>
-                        <th>DATE OF ORDER</th>
-                        <th>LINK TO PHOTO</th>
-                        <th>INVOICE LINK</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
                 </table>
                 <button id="add-btn" onClick={showPopUp}><span className="plus"></span></button>
             </div>
