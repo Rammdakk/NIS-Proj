@@ -129,6 +129,30 @@ code {
 
 /*TablePage*/
 
+.selectorPageButton {
+    background: white;
+    margin-left: 10px;
+    border: none;
+    height: 30px;
+    font-size: 16px;
+}
+
+.selectedButton {
+    background-color: lightskyblue;
+    color: white;
+    border: none;
+}
+
+.button-container {
+    background-color: gray;
+    padding: 10px 10px 10px 2%;
+}
+
+.button-line {
+    height: 2px;
+    background-color: #666;
+    margin-top: 10px;
+}
 
 .prod-table tbody tr {
     border-bottom: 1px solid #dddddd;
@@ -202,7 +226,7 @@ code {
 }
 
 .scrollable {
-    height: 85%;
+    height: 78%;
     overflow: auto;
 }
 

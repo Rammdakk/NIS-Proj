@@ -1,6 +1,8 @@
 import React from "react";
 
+var tablePage = 1
 var localData
+const regex = /\d{2}-\d{2}-\d{4}/;
 const Home = () => {
     if (!localStorage.getItem("token")) {
         window.location.href = window.location.origin + "/signin"
@@ -8,6 +10,21 @@ const Home = () => {
     loadTable()
     return (
         <div className="table-background">
+            <div className="button-container">
+                <button className="selectorPageButton" onClick={function () {
+                    selectButton(1)
+                }}>Waiting
+                </button>
+                <button className="selectorPageButton" onClick={function () {
+                    selectButton(2)
+                }}>In Stock
+                </button>
+                <button className="selectorPageButton" onClick={function () {
+                    selectButton(3)
+                }}>Shipped
+                </button>
+
+            </div>
             <table id="myTableHeader" className="prod-table">
                 <thead>
                 <tr>
@@ -50,13 +67,19 @@ const Home = () => {
                 <input type="text" id="photo_link" placeholder="photo link (opt)"/>
                 <input type="text" id="inv_link" placeholder="invoice link (opt)"/>
                 <label htmlFor="date">Date:</label>
-                <input type="date" id="date"/>
+                <input type="date" id="date" pattern="\d{1,2}/\d{1,2}/\d{4}" placeholder="dd/mm/yyyy"/>
                 <button id="save-btn">Save</button>
                 <button id="cancel-btn" onClick={hidePopUp}>Cancel</button>
             </div>
         </div>
     );
 };
+
+
+function selectButton(buttonIndex) {
+    tablePage = buttonIndex
+    updateTable()
+}
 
 function updateTable() {
     clearTable()
@@ -66,7 +89,7 @@ function updateTable() {
 function loadTable() {
     var xhr = new XMLHttpRequest();
     console.log(localStorage.getItem("token"))
-    xhr.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A2:G500`);
+    xhr.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/Лист${tablePage}!A2:G500`);
     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem("token"));
     xhr.send();
     xhr.onload = function () {
@@ -78,6 +101,11 @@ function loadTable() {
         data.values.forEach(function (entry) {
             addRow('myTable', entry)
         })
+        var buttons = document.getElementsByClassName("selectorPageButton");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("selectedButton");
+        }
+        buttons[tablePage - 1].classList.add("selectedButton");
     };
 }
 
@@ -103,7 +131,7 @@ function addItem() {
 }
 
 function addItemToTheSheet(arr) {
-    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A2:G2:append?valueInputOption=USER_ENTERED`, {
+    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/Лист${tablePage}!A2:G2:append?valueInputOption=USER_ENTERED`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -126,7 +154,7 @@ function addItemToTheSheet(arr) {
 }
 
 function updateItemInSheet(arr, pos) {
-    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A${pos}:G${pos}?valueInputOption=USER_ENTERED`, {
+    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/Лист${tablePage}!A${pos}:G${pos}?valueInputOption=USER_ENTERED`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -147,7 +175,7 @@ function updateItemInSheet(arr, pos) {
         })
     }).then(
         hidePopUp
-    )
+    ).then(updateTable)
 }
 
 function addRow(table_name, arr) {
@@ -188,11 +216,11 @@ function addRow(table_name, arr) {
     }
 }
 
-function updateRow(rowNumber){
+function updateRow(rowNumber) {
     document.getElementById('popup').style.display = 'block';
     document.getElementById('save-btn').onclick = function () {
         console.log("no test;")
-    // TODO: Make refresh
+        // TODO: Make refresh
         var arr = []
         arr.push(document.getElementById('item_name').value)
         arr.push(document.getElementById('quantity').value)
@@ -201,18 +229,25 @@ function updateRow(rowNumber){
         arr.push(document.getElementById('date').value)
         arr.push(document.getElementById('photo_link').value)
         arr.push(document.getElementById('inv_link').value)
-        updateItemInSheet(arr, rowNumber+2)
+        updateItemInSheet(arr, rowNumber + 2)
     }
     document.getElementById('item_name').value = localData[rowNumber][0];
-    document.getElementById('quantity').value =localData[rowNumber][1];
+    document.getElementById('quantity').value = localData[rowNumber][1];
     document.getElementById('item_id').value = localData[rowNumber][2];
     document.getElementById('item_price').value = localData[rowNumber][3];
-    document.getElementById('date').value = localData[rowNumber][4];
+    if (regex.test(localData[rowNumber][4])) {
+        const str = localData[rowNumber][4]
+        var res = str.substring(6, 10) + "-" + str.substring(3, 5) + "-" + str.substring(0, 2)
+        document.getElementById('date').value = res
+    } else {
+        document.getElementById('date').value = localData[rowNumber][4];
+    }
     document.getElementById('photo_link').value = localData[rowNumber][5];
     document.getElementById('inv_link').value = localData[rowNumber][6];
 }
+
 function deleteRow(rowNumber) {
-    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/A${rowNumber + 2}:G${rowNumber + 2}:clear`, {
+    fetch(`https://sheets.googleapis.com/v4/spreadsheets/${localStorage.getItem("sheet_id")}/values/Лист${tablePage}!A${rowNumber + 2}:G${rowNumber + 2}:clear`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
