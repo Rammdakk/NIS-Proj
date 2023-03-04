@@ -137,6 +137,17 @@ code {
     font-size: 16px;
 }
 
+.exit {
+    background: white;
+    position: fixed;
+    border: none;
+    height: 30px;
+    font-size: 16px;
+    right: 3%;
+    top: 2%;
+    width: 8%;
+}
+
 .selectedButton {
     background-color: lightskyblue;
     color: white;

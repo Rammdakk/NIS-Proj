@@ -9,67 +9,74 @@ const Home = () => {
     }
     loadTable()
     return (
-        <div className="table-background">
-            <div className="button-container">
-                <button className="selectorPageButton" onClick={function () {
-                    selectButton(1)
-                }}>Waiting
-                </button>
-                <button className="selectorPageButton" onClick={function () {
-                    selectButton(2)
-                }}>In Stock
-                </button>
-                <button className="selectorPageButton" onClick={function () {
-                    selectButton(3)
-                }}>Shipped
-                </button>
+        <div>
+            <button className="exit" onClick={function () {
+                console.log("exit")
+                localStorage.clear()
+                window.location.href = window.location.origin + "/signin"
+            }}>Exit</button>
+            <div className="table-background">
+                <div className="button-container">
+                    <button className="selectorPageButton" onClick={function () {
+                        selectButton(1)
+                    }}>Waiting
+                    </button>
+                    <button className="selectorPageButton" onClick={function () {
+                        selectButton(2)
+                    }}>In Stock
+                    </button>
+                    <button className="selectorPageButton" onClick={function () {
+                        selectButton(3)
+                    }}>Shipped
+                    </button>
 
-            </div>
-            <table id="myTableHeader" className="prod-table">
-                <thead>
-                <tr>
-                    <th>ITEM NAME</th>
-                    <th>QUANTITY</th>
-                    <th>ITEM ID</th>
-                    <th>PRICE</th>
-                    <th>DATE OF ORDER</th>
-                    <th>LINK TO PHOTO</th>
-                    <th>INVOICE LINK</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-            </table>
-            <div className="scrollable">
-                <table id="myTable" className="prod-table">
+                </div>
+                <table id="myTableHeader" className="prod-table">
+                    <thead>
+                    <tr>
+                        <th>ITEM NAME</th>
+                        <th>QUANTITY</th>
+                        <th>ITEM ID</th>
+                        <th>PRICE</th>
+                        <th>DATE OF ORDER</th>
+                        <th>LINK TO PHOTO</th>
+                        <th>INVOICE LINK</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
                 </table>
-                <button id="add-btn" onClick={showPopUp}><span className="plus"></span></button>
-            </div>
-            <div id="popup" className="popup">
-                <label htmlFor="productInfo">Product info:</label>
-                <input type="text" id="item_name" placeholder="item name"/>
-                <input type="text" id="item_id" placeholder="item id"/>
-                <input type="text" id="item_price" placeholder="item price"/>
-                <label htmlFor="quantity">Quantity:</label>
-                <select id="quantity" placeholder="quantity">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
-                <label htmlFor="links">Links:</label>
-                <input type="text" id="photo_link" placeholder="photo link (opt)"/>
-                <input type="text" id="inv_link" placeholder="invoice link (opt)"/>
-                <label htmlFor="date">Date:</label>
-                <input type="date" id="date" pattern="\d{1,2}/\d{1,2}/\d{4}" placeholder="dd/mm/yyyy"/>
-                <button id="save-btn">Save</button>
-                <button id="cancel-btn" onClick={hidePopUp}>Cancel</button>
+                <div className="scrollable">
+                    <table id="myTable" className="prod-table">
+                    </table>
+                    <button id="add-btn" onClick={showPopUp}><span className="plus"></span></button>
+                </div>
+                <div id="popup" className="popup">
+                    <label htmlFor="productInfo">Product info:</label>
+                    <input type="text" id="item_name" placeholder="item name"/>
+                    <input type="text" id="item_id" placeholder="item id"/>
+                    <input type="text" id="item_price" placeholder="item price"/>
+                    <label htmlFor="quantity">Quantity:</label>
+                    <select id="quantity" placeholder="quantity">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                    <label htmlFor="links">Links:</label>
+                    <input type="text" id="photo_link" placeholder="photo link (opt)"/>
+                    <input type="text" id="inv_link" placeholder="invoice link (opt)"/>
+                    <label htmlFor="date">Date:</label>
+                    <input type="date" id="date" pattern="\d{1,2}/\d{1,2}/\d{4}" placeholder="dd/mm/yyyy"/>
+                    <button id="save-btn">Save</button>
+                    <button id="cancel-btn" onClick={hidePopUp}>Cancel</button>
+                </div>
             </div>
         </div>
     );
