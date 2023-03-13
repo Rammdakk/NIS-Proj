@@ -20,6 +20,10 @@ const SignIn = () => {
             </head>
             <body>
             <div>
+                <div id="loading-screen2">
+                    <div className="spinner"></div>
+                    <div className="loading-text">Continue in popup...</div>
+                </div>
                 <div className="central-window">
                     <span className="title-sign-in">WAREHOUSE</span>
                     <div className="name"></div>
@@ -37,13 +41,20 @@ const SignIn = () => {
     );
 }
 
+function showLoadingScreen() {
+    document.getElementById("loading-screen2").style.display = "block";
+}
+
+function hideLoadingScreen() {
+    document.getElementById("loading-screen2").style.display = "none";
+}
 const initClient = () => {
-    console.log("frwgfhed")
     // eslint-disable-next-line no-undef
     client = google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: SCOPES,
         callback: (tokenResponse) => {
+            hideLoadingScreen()
             console.log(tokenResponse.access_token)
             console.log(tokenResponse.expires_in)
             access_token = tokenResponse.access_token;
@@ -84,6 +95,7 @@ function movePage() {
 }
 
 function getToken() {
+    showLoadingScreen()
     client.requestAccessToken();
 }
 

@@ -117,6 +117,7 @@ function generatePDF(){
 // Save the PDF document
     doc.save('barcode.pdf');
 }
+
 function selectButton(buttonIndex) {
     tablePage = buttonIndex
     updateTable()
