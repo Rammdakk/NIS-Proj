@@ -10,6 +10,7 @@ const SCOPES = "https://www.googleapis.com/auth/spreadsheets"
 const SignIn = () => {
     const script = document.createElement("script");
     script.onload = initClient;
+    document.title = "SignIn"
     script.src = "https://accounts.google.com/gsi/client";
     document.body.appendChild(script);
     return (
@@ -20,7 +21,7 @@ const SignIn = () => {
             <body>
             <div>
                 <div className="central-window">
-                    <span className="title-sign-in">WELCOME</span>
+                    <span className="title-sign-in">WAREHOUSE</span>
                     <div className="name"></div>
                     <input type="text" id="myTextField" className="signInTV"/>
                     <button id="google-signin-btn" className="signin-button" onClick={getToken}>
@@ -63,6 +64,9 @@ const initClient = () => {
 
 function movePage() {
     var link = document.getElementById("myTextField").value
+    if (!link.includes("https://docs.google.com/spreadsheets/d")){
+        window.location.href = window.location.origin + "/notFound"
+    }
     var part = link.split('/')
     var id = part[part.length-2]
     localStorage.setItem("sheet_id", id)

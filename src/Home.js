@@ -1,4 +1,8 @@
 import React from "react";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import jsBarcode from 'jsbarcode';
+import {BiLogOut} from "react-icons/bi";
 
 var tablePage = 1
 var localData
@@ -7,14 +11,20 @@ const Home = () => {
     if (!localStorage.getItem("token")) {
         window.location.href = window.location.origin + "/signin"
     }
+    document.title = "Home"
     loadTable()
     return (
         <div>
-            <button className="exit" onClick={function () {
+            <div id="loading-screen">
+                <div className="spinner"></div>
+                <div className="loading-text">Loading...</div>
+            </div>
+
+            <BiLogOut className="exit" onClick={function () {
                 console.log("exit")
                 localStorage.clear()
                 window.location.href = window.location.origin + "/signin"
-            }}>Exit</button>
+            }}></BiLogOut>
             <div className="table-background">
                 <div className="button-container">
                     <button className="selectorPageButton" onClick={function () {
@@ -28,6 +38,10 @@ const Home = () => {
                     <button className="selectorPageButton" onClick={function () {
                         selectButton(3)
                     }}>Shipped
+                    </button>
+                    <button className="selectorPageButton" onClick={function () {
+                        window.location.href = window.location.origin + "/analytics"
+                    }}>Analytics
                     </button>
 
                 </div>
@@ -82,16 +96,46 @@ const Home = () => {
     );
 };
 
+function generatePDF(){
+// Generate the string data for the barcode
+    const barcodeData = '1234567890';
 
+// Create a new PDF document
+    const doc = new jsPDF();
+
+// Generate the barcode image using jsBarcode
+    jsBarcode(doc, barcodeData, {
+        format: 'CODE39',
+        displayValue: true,
+        margin: 0,
+        height: 20,
+    });
+
+// Get the barcode image as a data URL
+    const barcodeDataURL = doc.output('datauristring');
+
+// Save the PDF document
+    doc.save('barcode.pdf');
+}
 function selectButton(buttonIndex) {
     tablePage = buttonIndex
     updateTable()
 }
 
 function updateTable() {
+    showLoadingScreen()
     clearTable()
     loadTable()
 }
+
+function showLoadingScreen() {
+    document.getElementById("loading-screen").style.display = "block";
+}
+
+function hideLoadingScreen() {
+    document.getElementById("loading-screen").style.display = "none";
+}
+
 
 function loadTable() {
     var xhr = new XMLHttpRequest();
@@ -113,6 +157,7 @@ function loadTable() {
             buttons[i].classList.remove("selectedButton");
         }
         buttons[tablePage - 1].classList.add("selectedButton");
+        hideLoadingScreen()
     };
 }
 
@@ -200,6 +245,7 @@ function addRow(table_name, arr) {
     dateCell.appendChild(document.createTextNode(arr[4]));
     var photoCell = newRow.insertCell(5);
     photoCell.appendChild(document.createTextNode(arr[5]));
+    photoCell.innerHTML = photoCell.innerHTML.replace(/(http:\/\/[^\s]+)/g, "<a href='$1'>$1</a>")
     var invoiceCell = newRow.insertCell(6);
     invoiceCell.appendChild(document.createTextNode(arr[6]));
     var editCell = newRow.insertCell(7);

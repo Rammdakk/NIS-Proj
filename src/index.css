@@ -63,6 +63,33 @@ code {
     overflow: hidden;
 }
 
+.title {
+    width: 100%;
+    color: rgba(144, 85, 85, 1);
+    margin-left: 42%;
+    margin-top: 15%;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Inter, serif;
+    font-weight: normal;
+    font-size: 64px;
+    opacity: 1;
+    text-align: center;
+}
+
+.subtitle {
+    width: 100%;
+    color: rgba(144, 85, 85, 1);
+    margin-left: 35%;
+    margin-top: 15%;
+    margin-bottom: 15%;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Inter, serif;
+    font-weight: normal;
+    font-size: 34px;
+    opacity: 1;
+    text-align: center;
+}
+
 .title-sign-in {
     width: 100%;
     color: rgba(144, 85, 85, 1);
@@ -71,7 +98,7 @@ code {
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     font-family: Inter, serif;
     font-weight: normal;
-    font-size: 64px;
+    font-size: 56px;
     opacity: 1;
     text-align: center;
 }
@@ -138,13 +165,26 @@ code {
 }
 
 .exit {
-    background: white;
+    background: transparent;
     position: fixed;
+    color: black;
     border: none;
-    height: 30px;
+    height: 45px;
     font-size: 16px;
-    right: 3%;
-    top: 2%;
+    top: 5%;
+    right: 0%;
+    width: 8%;
+}
+
+.back {
+    background: transparent;
+    position: fixed;
+    color: black;
+    border: none;
+    height: 45px;
+    font-size: 16px;
+    top: 3%;
+    right: 0%;
     width: 8%;
 }
 
@@ -355,4 +395,71 @@ code {
     margin-left: 5%;
     width: 35%;
     cursor: pointer;
+}
+
+
+.chart-background {
+   aspect-ratio: 1;
+    max-width: 33%;
+    height: 50%;
+    opacity: 1;
+    position: absolute;
+    top: 15%;
+    left: 3%;
+}
+.chart-background2 {
+    aspect-ratio: 1;
+    height: 50%;
+    max-width: 33%;
+    opacity: 1;
+    position: absolute;
+    top: 15%;
+    left: 37%;
+}
+.chart-background3 {
+    aspect-ratio: 1;
+    height: 50%;
+    max-width: 33%;
+    opacity: 1;
+    position: absolute;
+    top: 15%;
+    left: 70%;
+}
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: block;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+    margin-top: 25%;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    text-align: center;
+    color: #fff;
+    font-size: 20px;
+    margin-top: 20px;
 }
